@@ -1,0 +1,17 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ],
+  "include": [
+    "scr/**/*.ts", 
+    "scr/**/*.vue", 
+    "scr/**/*.vue", 
+    "scr/**/*.vue",
+    "shims-vue.d.ts" 
+  ],
+  "types": [
+   "vuex/types"
+]
+}
