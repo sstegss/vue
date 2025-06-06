@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
-import PostItem from '../components/PostItem.vue'
 import axios from 'axios';
 import { useRoute } from 'vue-router';
 

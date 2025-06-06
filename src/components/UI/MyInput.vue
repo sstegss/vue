@@ -1,16 +1,27 @@
 <script setup lang="ts">
-    // export default {
-    //     name : 'my-input',
-    //     props:{
-    //         modelValue:[String,Number]
-    //     },
-    //     methods:{
-    //         updateInput(event: Event){
-    //             const target = event.target as HTMLInputElement
-    //             this.$emit('update:modelValue', target.value)
-    //         }
-    //     }
-    // }
+defineProps<{
+    modelValue: string | number;
+}>();
+const emit = defineEmits<{
+    (e: 'update:modalValue', value: string | number): void
+}>();
+
+const updateInput = (event: Event) => {
+    const target = event.target as HTMLInputElement;
+    emit('update:modalValue', target.value)
+}
+// export default {
+//     name : 'my-input',
+//     props:{
+//         modelValue:[String,Number]
+//     },
+//     methods:{
+//         updateInput(event: Event){
+//             const target = event.target as HTMLInputElement
+//             this.$emit('update:modelValue', target.value)
+//         }
+//     }
+// }
 </script>
 
 <template>

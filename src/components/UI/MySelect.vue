@@ -1,31 +1,22 @@
 <script setup lang="ts">
-import type { PropType } from 'vue';
-
-interface SelectOption{
+interface SelectOption {
   value: string,
   name: string
 }
-export default {
-  name: 'my-select',
-  props: {
-    modelValue: {
-      type: String,
-      default: ""
-    },
-    options: {
-      type: Array as PropType<SelectOption[]>,
-      default: () => [] as SelectOption[]
-    }
-  },
-  emits: ['update:modelValue'],
-  setup(props, { emit }) {
-    const handlerChange = (event: Event) => {
-      const target = event.target as HTMLSelectElement;
-      emit('update:modelValue', target.value)
-    };
-    return { handlerChange };
-  }
-}
+
+const { modelValue = '', options = [] } = defineProps<{
+  modelValue: string,
+  options: SelectOption[],
+}>();
+
+const emit = defineEmits<{
+  (e: 'update:modelValue', value: string): void;
+}>();
+
+const handlerChange = (event: Event) => {
+  const target = event.target as HTMLSelectElement;
+  emit('update:modelValue', target.value
+)};
 </script>
 
 <template>
