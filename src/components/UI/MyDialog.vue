@@ -1,3 +1,27 @@
+<script setup lang="ts">
+import { ref, watch } from 'vue';
+
+const props = defineProps<{
+    show: boolean
+}>();
+
+const emit = defineEmits<{
+    (e: 'update:show', value: boolean): void
+}>()
+
+const isShow = ref(props.show);
+
+const hideDialog = () => {
+    emit('update:show', false);
+}
+watch(() => props.show, (newValue)=>{
+    isShow.value = newValue
+})
+
+
+
+</script>
+
 <template>
     <div class="dialog" v-if="show" @click.stop="hideDialog">
         <div @click.stop class="dialog__content">
@@ -5,15 +29,6 @@
         </div>
     </div>
 </template>
-
-<script lang="ts">
-import toggleMixin from '../../mixins/toggleMixin';
-
-export default {
-    name: "my-dialog",
-    mixins:[toggleMixin]
-}
-</script>
 
 <style scoped>
 .dialog {

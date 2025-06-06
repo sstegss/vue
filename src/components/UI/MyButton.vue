@@ -1,14 +1,12 @@
+
+
+<script setup lang="ts">
+</script>
 <template>
     <button class="btn">
         <slot></slot>
     </button>
 </template>
-
-<script lang="ts">
-export default {
-    name: 'my-button'
-}
-</script>
 
 <style scoped>
 .btn {

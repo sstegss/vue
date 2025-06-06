@@ -1,31 +1,8 @@
-<template>
-
-    <div>
-        <h1>Страница с постами</h1>
-        <my-input :model-value="searchQuery" @update:model-value="setSearchQuery" />
-        <div class="app__btns">
-
-            <my-button @click="showDialog" style="">
-                Создать пост
-            </my-button>
-            <my-select :model-value="selectedSort" :options="sortOptions" @update:model-value="setSelectedSort" />
-        </div>
-
-        <my-dialog v-model:show="dialogVisible">
-            <post-form @create="createPost" />
-        </my-dialog>
-        <post-list v-if="!isPostsLoading" :posts="sortedAndSearchPosts" @remove="removePost" />
-        <div v-else>Идёт загрузка</div>
-        <div v-intersection="loadMorePosts" ref="observer" class="observer"></div>
-    </div>
-</template>
-
-
-<script lang="ts">
-import { mapActions, mapGetters, mapMutations, mapState, type MapStateReturn } from "vuex";
+<script setup lang="ts">
 import PostForm from "../components/PostForm.vue";
 import PostList from "../components/PostList.vue";
-import type { ComputedRef, } from "vue";
+import { computed, onMounted, ref, type ComputedRef, } from "vue";
+import { useStore } from "vuex/types/index.js";
 interface Post {
     id?: number,
     title: string
@@ -45,72 +22,72 @@ interface PostState {
     sortOptions: SortOptions[],
     searchQuery: string,
 }
-export default {
-    components: {
-        PostForm,
-        PostList,
-    },
-    data() {
-        return {
-            dialogVisible: false,
-
-        }
-    },
-    methods: {
-        ...mapMutations({
-            setPage: 'post/setPage',
-            setSearchQuery: 'post/setSearchQuery',
-            setSelectedSort: 'post/setSelectedSort'
-        }),
-        ...mapActions({
-            loadMorePosts: 'post/loadMorePosts',
-            fetchPosts: 'post/fetchPosts'
-        }),
-        createPost(post: Post) {
-            this.posts.push(post)
-            this.dialogVisible = false
-        },
-        removePost(post: Post) {
-            this.posts = this.posts.filter((p: Post) => p.id !== post.id)
-        },
-        showDialog() {
-            this.dialogVisible = true
-        },
+const store = useStore();
+const dialogVisible = ref(false)
 
 
-    },
-    mounted() {
-        this.fetchPosts()
-    },
-    computed: {
-        ...mapState("post", {
-            posts: (state: PostState) => state.posts,
-            isPostsLoading: (state: PostState) => state.isPostsLoading,
-            page: (state: PostState) => state.page,
-            limit: (state: PostState) => state.limit,
-            totalPages: (state: PostState) => state.totalPages,
-            selectedSort: (state: PostState) => state.selectedSort,
-            sortOptions: (state: PostState) => state.sortOptions,
-            searchQuery: (state: PostState) => state.searchQuery,
-        }) as MapStateReturn & {
-            posts: ComputedRef<Post[]>
-            isPostsLoading: ComputedRef<boolean>,
-            page: ComputedRef<number>,
-            limit: ComputedRef<number>,
-            totalPages: ComputedRef<number>,
-            selectedSort: ComputedRef<string>,
-            sortOptions: ComputedRef<SortOptions[]>,
-            searchQuery: ComputedRef<string>,
-        },
-        ...mapGetters({
-            sortedPosts: 'post/sortedPosts',
-            sortedAndSearchPosts: 'post/sortedAndSearchPosts'
-        }),
-    },
+
+const posts = computed(() => store.state.post.posts);
+const isPostsLoading = computed(() => store.state.post.isPostsLoading);
+const page = computed(() => store.state.post.page);
+const limit = computed(() => store.state.post.limit);
+const totalPages = computed(() => store.state.post.totalPages);
+const selectedSort = computed(() => store.state.post.selectedSort);
+const sortOptions = computed(() => store.state.post.sortOptions);
+const searchQuery = computed(() => store.state.post.searchQuery);
+const sortedPosts = computed(() => store.getters['post/sortedPosts']);
+const sortedAndSearchPosts = computed(() => store.getters['post/sortedAndSearchPosts']);
+
+const setPage = (value:number) => store.commit('post/',value);
+const setSearchQuery= (value:string) => store.commit('post/',value);
+const setSelectedSort = (value:string) => store.commit('post/',value);
+const loadMorePosts= () => store.dispatch('post/');
+const fetchPosts= () => store.dispatch('post/');
+
+const createPost = (post: Post) => {
+    store.state.post.posts.push(post)
+    dialogVisible.value = false
+};
+
+const removePost = (post: Post) => {
+    store.state.post.posts = store.state.post.posts.filter((p: Post) => p.id !== post.id)
+};
+
+const showDialog = () => {
+    dialogVisible.value = true
 }
+
+onMounted(()=>{
+    fetchPosts()
+})
 
 </script>
 
+<template>
+
+    <div>
+        <h1>Страница с постами</h1>
+        <MyInput :model-value="searchQuery" @update:model-value="setSearchQuery" />
+        <div class="app__btns">
+            <MyButton @click="showDialog" >
+                Создать пост
+            </MyButton>
+            <MySelect :model-value="selectedSort" :options="sortOptions" @update:model-value="setSelectedSort" />
+        </div>
+
+        <MyDialog v-model:show="dialogVisible">
+            <PostForm @create="createPost" />
+        </MyDialog>
+        
+        <PostList 
+            v-if="!isPostsLoading" 
+            :posts="sortedAndSearchPosts" 
+            @remove="removePost" 
+        />
+        <div v-else>Идёт загрузка</div>
+        <div v-intersection="loadMorePosts"  class="observer"></div>
+    </div>
+</template>
 
 <style>
 .app__btns {

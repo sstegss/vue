@@ -1,8 +1,20 @@
+<script setup lang="ts" >
+import PostItem from './PostItem.vue';
+interface Post {
+    id?: number,
+    title: string
+    body: string,
+}
+const props = defineProps<{
+    posts: Post[]
+}>()
+</script>
+
 <template>
     <div v-if="posts.length > 0" class="posts">
         <h3>Список постов</h3>
         <transition-group name="post-list">
-            <post-item @remove="$emit('remove', post)" :key="post.id" :post="post" v-for="post in posts"></post-item>
+            <PostItem @remove="$emit('remove', post)" :key="post.id" :post="post" v-for="post in props.posts"></PostItem>
         </transition-group>
 
 
@@ -12,24 +24,7 @@
     </h2>
 
 </template>
-<script lang="ts">
-import type { PropType } from 'vue';
-import PostItem from './PostItem.vue';
-interface Post {
-    id?: number,
-    title: string
-    body: string,
-}
-export default {
-    components: { PostItem },
-    props: {
-        posts: {
-            type: Array as PropType<Post[]>,
-            required: true,
-        }
-    },
-}
-</script>
+
 <style scoped>
 .post-list-item{
     display: inline-block;

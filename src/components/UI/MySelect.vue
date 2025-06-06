@@ -1,13 +1,4 @@
-<template>
-  <select :value="modelValue" @change="handlerChange">
-    <option disabled value="">Выберите из списка</option>
-    <option v-for="option in options" :key="option.value" :value="option.value">
-      {{ option.name }}
-    </option>
-  </select>
-</template>
-
-<script lang="ts">
+<script setup lang="ts">
 import type { PropType } from 'vue';
 
 interface SelectOption{
@@ -36,3 +27,12 @@ export default {
   }
 }
 </script>
+
+<template>
+  <select :value="modelValue" @change="handlerChange">
+    <option disabled value="">Выберите из списка</option>
+    <option v-for="option in options" :key="option.value" :value="option.value">
+      {{ option.name }}
+    </option>
+  </select>
+</template>

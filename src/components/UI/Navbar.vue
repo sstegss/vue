@@ -2,11 +2,12 @@
     <nav>
         <h1 @click="$router.push('/')" style="cursor: pointer;">Company</h1>
         <div class="nav__btns">
-            <my-button @click="$router.push('/posts')">Посты</my-button>
-            <my-button @click="$router.push('/about')" style="margin-left: 15px;">О сайте</my-button>
+            <MyButton @click="$router.push('/posts')">Посты</MyButton>
+            <MyButton @click="$router.push('/about')" style="margin-left: 15px;">О сайте</MyButton>
         </div>
     </nav>
 </template>
+
 <style lang="css" scoped>
 nav {
     padding-inline: 20px;

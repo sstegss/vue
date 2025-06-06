@@ -1,3 +1,16 @@
+<script setup lang="ts">
+interface Post {
+    id?: number,
+    title: string
+    body: string,
+}
+
+defineProps<{
+    post: Post
+}>();
+
+</script>
+
 <template>
     <div class="post">
         <div>
@@ -6,29 +19,12 @@
             <div><b>Описание:</b> {{ post.body }}</div>
         </div>
         <div class="post__btns">
-            <my-button @click="$router.push(`/posts/${post.id}`)">Открыть</my-button>
-            <my-button @click="$emit('remove', post)" style="margin-left: 10px;">Удалить</my-button>
+            <MyButton @click="$router.push(`/posts/${post.id}`)">Открыть</MyButton>
+            <MyButton @click="$emit('remove', post)" style="margin-left: 10px;">Удалить</MyButton>
         </div>
     </div>
 </template>
 
-<script lang="ts">
-import type { PropType } from 'vue';
-
-interface Post {
-    id?: number,
-    title: string
-    body: string,
-}
-export default {
-    props: {
-        post: {
-            type: Object as PropType<Post>,
-            required: true
-        }
-    },
-}
-</script>
 <style scoped>
 .post {
     padding: 15px;

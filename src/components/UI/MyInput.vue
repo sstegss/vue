@@ -1,21 +1,23 @@
+<script setup lang="ts">
+    // export default {
+    //     name : 'my-input',
+    //     props:{
+    //         modelValue:[String,Number]
+    //     },
+    //     methods:{
+    //         updateInput(event: Event){
+    //             const target = event.target as HTMLInputElement
+    //             this.$emit('update:modelValue', target.value)
+    //         }
+    //     }
+    // }
+</script>
+
 <template>
     <input :value="modelValue" @input="updateInput" class="input" type="text">
 </template>
 
-<script lang="ts">
-    export default {
-        name : 'my-input',
-        props:{
-            modelValue:[String,Number]
-        },
-        methods:{
-            updateInput(event: Event){
-                const target = event.target as HTMLInputElement
-                this.$emit('update:modelValue', target.value)
-            }
-        }
-    }
-</script>
+
 
 <style scoped>
 .input {

@@ -1,3 +1,47 @@
+<script setup lang="ts">
+import { onMounted, ref, watch } from 'vue';
+import PostItem from '../components/PostItem.vue'
+import axios from 'axios';
+import { useRoute } from 'vue-router';
+
+interface Post {
+    title: string
+    body: string,
+}
+
+const post = ref<Post | null>(null)
+const route = useRoute()
+
+const fetchPost = async (id: Number) => {
+    try {
+        const response = await axios.get<Post>(`https://jsonplaceholder.typicode.com/posts/${id}`)
+        post.value = response.data
+    } 
+    catch(e:unknown){
+        if (e instanceof Error){
+            console.error('Ошибка загрузки поста', e.message)
+        } else{
+            console.error('Неизвестная ошибка', e)
+        }
+    }
+}
+
+onMounted(()=>{
+    const id = Number(route.params.id)
+    if (id) fetchPost(id)
+})
+
+watch(
+    () => route.params.id,
+    (newId) => {
+        if (newId) fetchPost(Number(newId))
+    },
+    { immediate: true }
+)
+
+
+</script>
+
 <template>
     <div>
         <h1>Это страница поста с ID = {{ $route.params.id }}</h1>
@@ -8,46 +52,3 @@
         <div v-else>загрузка...</div>
     </div>
 </template>
-
-<script lang="ts">
-import PostItem from '../components/PostItem.vue'
-import axios from 'axios';
-export default {
-    components: { PostItem },
-    data() {
-        return {
-            post: {
-                title: '',
-                body: '',
-            },
-            id: -1,
-        }
-    },
-    methods: {
-        async fetchPost(id: Number) {
-            try {
-                const response = await axios.get(`https://jsonplaceholder.typicode.com/posts/${id}`);
-                this.post = response.data;
-
-            }
-            catch (e: unknown) {
-                if (e instanceof Error) console.error('Ошибка загрузки поста', e.message)
-                else console.error('Неизвестная ошибка', e)
-
-            }
-        },
-    },
-    mounted() {
-        this.id = Number(this.$route.params.id)
-        this.fetchPost(this.id)
-    },
-    watch: {
-        '$route.params.id': {
-            handler(newId) {
-                this.fetchPost(newId);
-            },
-            immediate: true
-        }
-    }
-}
-</script>
