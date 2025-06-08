@@ -1,20 +1,25 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import MyInput from './UI/MyInput.vue';
+import MyButton from './UI/MyButton.vue';
 
 interface Post {
-    id?: number,
-    title: string
-    body: string,
+    id?: number;
+    title: string;
+    body: string;
 }
 
 const emit = defineEmits<{
     (e: 'create', post: Post): void;
 }>();
 
+
+
 const post = ref<Post>({
     title: '',
     body: '',
 });
+
 const createPost = () => {
     const newPost: Post = {
         ...post.value,
@@ -32,9 +37,9 @@ const createPost = () => {
 <template>
     <form @submit.prevent="createPost">
         <h3>создание поста</h3>
-        <my-input v-focus v-model.trim="post.title" placeholder="Название" />
-        <my-input v-model.trim="post.body" placeholder="Описание" />
-        <my-button type="submit" style="align-self: flex-end; margin-top: 15px">Отправить</my-button>
+        <MyInput v-focus v-model.trim="post.title" placeholder="Название" />
+        <MyInput v-model.trim="post.body" placeholder="Описание" />
+        <MyButton type="submit" style="align-self: flex-end; margin-top: 15px">Отправить</MyButton>
     </form>
 </template>
 

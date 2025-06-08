@@ -3,6 +3,9 @@ import { useStore } from "vuex";
 import PostForm from "../components/PostForm.vue";
 import PostList from "../components/PostList.vue";
 import { computed, onMounted, ref } from "vue";
+import MyButton from "../components/UI/MyButton.vue";
+import MyInput from "../components/UI/MyInput.vue";
+import MyDialog from "../components/UI/MyDialog.vue";
 interface Post {
     id?: number,
     title: string
@@ -30,8 +33,7 @@ const createPost = (post: Post) => {
 };
 
 const removePost = (post: Post) => {
-    store.commit('post/removePost', post)
-
+    store.state.post.posts = store.state.post.posts.filter((p: Post) => p.id !== post.id)
 };
 
 const showDialog = () => {
@@ -41,7 +43,6 @@ const showDialog = () => {
 onMounted(() => {
     fetchPosts()
 })
-
 </script>
 
 <template>
