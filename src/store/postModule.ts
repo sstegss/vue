@@ -41,6 +41,7 @@ export const postModule = {
       state: PostState,
       getters: { sortedPosts: Post[] }
     ): Post[] {
+      console.log("Filtered posts:", getters.sortedPosts);
       return getters.sortedPosts.filter((post) =>
         post.title.toLowerCase().includes(state.searchQuery.toLowerCase())
       );
@@ -64,6 +65,9 @@ export const postModule = {
     },
     setSearchQuery(state: PostState, searchQuery: string) {
       state.searchQuery = searchQuery;
+      console.log("Search query set:", searchQuery);
+      //не изменяется при вводе
+      
     },
   },
   actions: {

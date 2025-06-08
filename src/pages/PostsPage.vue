@@ -19,10 +19,12 @@ const dialogVisible = ref(false)
 const isPostsLoading = computed(() => store.state.post.isPostsLoading);
 const selectedSort = computed(() => store.state.post.selectedSort);
 const sortOptions = computed(() => store.state.post.sortOptions);
-const searchQuery = computed(() => store.state.post.searchQuery);
+const searchQuery = computed({
+    get: () => store.state.post.searchQuery,
+    set: (value: string) => store.commit('post/setSearchQuery', value)
+});
 const sortedAndSearchPosts = computed(() => store.getters['post/sortedAndSearchPosts']);
 
-const setSearchQuery = (value: string) => store.commit('post/setSearchQuery', value);
 const setSelectedSort = (value: string) => store.commit('post/setSelectedSort', value);
 const loadMorePosts = () => store.dispatch('post/loadMorePosts');
 const fetchPosts = () => store.dispatch('post/fetchPosts');
@@ -49,7 +51,7 @@ onMounted(() => {
 
     <div>
         <h1>Страница с постами</h1>
-        <MyInput :model-value="searchQuery" @update:model-value="setSearchQuery" />
+        <MyInput v-model="searchQuery"  />
         <div class="app__btns">
             <MyButton @click="showDialog">
                 Создать пост

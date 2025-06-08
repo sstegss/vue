@@ -11,7 +11,9 @@
     "scr/**/*.vue",
     "shims-vue.d.ts" 
   ],
-  "types": [
-   "vuex/types"
-]
+  "compilerOptions": {
+    "types": [
+      "vuex/types"
+    ]
+  }
 }

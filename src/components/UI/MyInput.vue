@@ -3,12 +3,12 @@ defineProps<{
     modelValue: string | number;
 }>();
 const emit = defineEmits<{
-    (e: 'update:modalValue', value: string | number): void
+    (e: 'update:modelValue', value: string | number): void
 }>();
 
 const updateInput = (event: Event) => {
     const target = event.target as HTMLInputElement;
-    emit('update:modalValue', target.value)
+    emit('update:modelValue', target.value)
 }
 </script>
 
